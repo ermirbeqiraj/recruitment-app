@@ -11,7 +11,8 @@ namespace Domain.Entities
         public Candidate Candidate { get; private set; }
         public Vacancy Vacancy { get; private set; }
 
-        public Appointment(AppointmentType type, DateTime startsAt, Candidate withCandidate, Vacancy forVacancy)
+        private Appointment() { }
+        public Appointment(AppointmentType type, DateTime startsAt, Candidate withCandidate, Vacancy forVacancy) : this()
         {
             AppointmentType = type;
             StartsAt = startsAt;
