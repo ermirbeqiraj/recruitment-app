@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Web.Models
 {
@@ -16,11 +13,17 @@ namespace Web.Models
 
     public class ClientCreateModel
     {
-
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+        public string Website { get; set; }
+        public string Description { get; set; }
     }
 
     public class ClientUpdateModel
     {
-
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+        public string Website { get; set; }
+        public string Description { get; set; }
     }
 }

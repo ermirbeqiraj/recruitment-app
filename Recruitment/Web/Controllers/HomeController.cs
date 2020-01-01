@@ -28,17 +28,6 @@ namespace Web.Controllers
 
         public async Task<IActionResult> Privacy()
         {
-            var regClHndl = new RegisterClientCommand()
-            {
-                Name = "Ermir Beqiraj",
-                Description = ".Net Developer",
-                Website = "https://ermir.net"
-            };
-
-
-
-            await _mediator.Send(regClHndl);
-
             return View();
         }
 

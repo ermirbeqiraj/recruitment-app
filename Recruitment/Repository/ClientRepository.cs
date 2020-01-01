@@ -2,6 +2,10 @@
 using Domain.Common;
 using Domain.Entities;
 using Domain.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Repository
 {
@@ -28,6 +32,16 @@ namespace Repository
         public void Update(Client model)
         {
             _context.Entry(model).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+        }
+
+        public async Task<Client> Get(Guid id)
+        {
+            var client = await _context.Clients.Where(x => x.Id == id)
+                                    .Include(v => v.Vacancies)
+                                    .ThenInclude(r => r.Requirements)
+                                    .FirstOrDefaultAsync();
+
+            return client;
         }
     }
 }

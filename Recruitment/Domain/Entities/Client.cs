@@ -27,5 +27,20 @@ namespace Domain.Entities
         {
             _vacancies.Add(vacancy);
         }
+
+        public void UpdateName(string name)
+        {
+            Name = name;
+        }
+
+        public void UpdateWebsite(string website)
+        {
+            Website = website;
+        }
+
+        public void UpdateDescription(string description)
+        {
+            Description = description;
+        }
     }
 }

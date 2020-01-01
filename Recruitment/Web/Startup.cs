@@ -48,6 +48,12 @@ namespace Web
 
             services.AddControllersWithViews();
             services.AddRazorPages();
+            services.AddRouting(opts =>
+            {
+                opts.LowercaseUrls = true;
+                opts.AppendTrailingSlash = true;
+                opts.LowercaseQueryStrings = true;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

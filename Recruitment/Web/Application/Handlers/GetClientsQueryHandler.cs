@@ -11,15 +11,15 @@ using Web.Utils;
 
 namespace Web.Application.Handlers
 {
-    public sealed class GetClientsCommandHandler : IRequestHandler<GetClientsCommand, List<ClientListModel>>
+    public sealed class GetClientsQueryHandler : IRequestHandler<GetClientsQuery, List<ClientListModel>>
     {
         private readonly QueriesConnectionString _connectionString;
-        public GetClientsCommandHandler(QueriesConnectionString connectionString)
+        public GetClientsQueryHandler(QueriesConnectionString connectionString)
         {
             _connectionString = connectionString;
         }
 
-        public async Task<List<ClientListModel>> Handle(GetClientsCommand request, CancellationToken cancellationToken)
+        public async Task<List<ClientListModel>> Handle(GetClientsQuery request, CancellationToken cancellationToken)
         {
             const string sql = @"select C.Id, C.Name, C.Website, C.Description, Count(V.Id) as OpenVacancies
                                     from Clients as C
