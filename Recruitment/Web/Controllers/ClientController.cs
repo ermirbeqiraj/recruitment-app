@@ -71,5 +71,66 @@ namespace Web.Controllers
 
             return View(model);
         }
+
+        [Route("[controller]/vacancy-({client:guid:required})/[action]")]
+        public async Task<IActionResult> Vacancies(Guid client)
+        {
+            var cmd = new GetVacancyListQuery(client);
+            var result = await _mediator.Send(cmd);
+
+            ViewBag.Client = client;
+            return View(result);
+        }
+
+        [Route("[controller]/vacancy-({client:guid:required})/[action]")]
+        public IActionResult CreateVacancy(Guid client)
+        {
+            ViewBag.Client = client;
+            return View();
+        }
+
+        [HttpPost]
+        [Route("[controller]/vacancy-({client:guid:required})/[action]")]
+        public async Task<IActionResult> CreateVacancy(Guid client, VacancyCreateModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var cmd = new OpenVacancyCommand(model.Title, model.Description, model.OpenDate, model.CloseDate, client);
+                var result = await _mediator.Send(cmd);
+                if (result.IsFailure)
+                    ModelState.AddModelError("", result.Error);
+                else
+                    return RedirectToAction("Vacancies", new { client });
+            }
+
+            ViewBag.Client = client;
+            return View(model);
+        }
+
+        [Route("[controller]/vacancy-({client:guid:required})/[action]/{id}")]
+        public async Task<IActionResult> EditVacancy(Guid client, Guid id)
+        {
+            var cmd = new GetVacancyQuery(id);
+            var vacancy = await _mediator.Send(cmd);
+            return View(vacancy);
+        }
+
+        [HttpPost]
+        [Route("[controller]/vacancy-({client:guid:required})/[action]/{id}")]
+        public async Task<IActionResult> EditVacancy(Guid client, VacancyUpdateModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var cmd = new UpdateVacancyCommand(model.Id, client, model.Title, model.Description, model.OpenDate, model.CloseDate);
+                var result = await _mediator.Send(cmd);
+
+                if (result.IsFailure)
+                    ModelState.AddModelError("", result.Error);
+                else
+                    return RedirectToAction(nameof(ClientController.Vacancies), new { client });
+            }
+
+            return View(model);
+        }
     }
 }

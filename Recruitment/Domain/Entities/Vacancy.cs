@@ -18,7 +18,7 @@ namespace Domain.Entities
             _requirements = new List<Requirement>();
         }
 
-        public Vacancy(string title, string description, DateTime openDate, DateTime closeDate) : this()
+        public Vacancy(string title, string description, DateTime? openDate, DateTime? closeDate) : this()
         {
             Title = title;
             Description = description;
@@ -29,6 +29,26 @@ namespace Domain.Entities
         public void AddRequirement(Requirement requirement)
         {
             _requirements.Add(requirement);
+        }
+
+        public void UpdateTitle(string title)
+        {
+            Title = title;
+        }
+
+        public void UpdateDescription(string description)
+        {
+            Description = description;
+        }
+
+        public void UpdateOpenDate(DateTime? openDate)
+        {
+            OpenDate = openDate;
+        }
+
+        public void UpdateCloseDate(DateTime? closeDate)
+        {
+            CloseDate = closeDate;
         }
     }
 }

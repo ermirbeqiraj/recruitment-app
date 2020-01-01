@@ -1,5 +1,7 @@
 ﻿using Domain.Common;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Domain.Entities
 {
@@ -26,6 +28,27 @@ namespace Domain.Entities
         public void AddVacancy(Vacancy vacancy)
         {
             _vacancies.Add(vacancy);
+        }
+
+        public void UpdateVacancy(Guid id, string title, string description, DateTime? openDate, DateTime? closeDate)
+        {
+            var found = _vacancies.Where(x => x.Id == id).Any();
+
+            if (!found)
+                throw new ArgumentException("Vacancy that you are trying to update doesn't exists!");
+
+            foreach (var item in _vacancies)
+            {
+                if(item.Id == id)
+                {
+                    item.UpdateTitle(title);
+                    item.UpdateDescription(description);
+                    item.UpdateOpenDate(openDate);
+                    item.UpdateCloseDate(closeDate);
+
+                    break;
+                }
+            }
         }
 
         public void UpdateName(string name)
