@@ -1,10 +1,13 @@
 ﻿using Data.Configuration;
+using Domain.Common;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Data.Context
 {
-    public class ApplicationContext : DbContext
+    public class ApplicationContext : DbContext, IUnitOfWork
     {
         public DbSet<Appointment> Appointments { get; set; }
         public DbSet<Candidate> Candidates { get; set; }
@@ -14,7 +17,7 @@ namespace Data.Context
 
         public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
         {
-            this.Database.EnsureDeleted();
+            this.Database.EnsureCreated();
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -24,6 +27,11 @@ namespace Data.Context
             builder.ApplyConfiguration(new ClientConfigurations());
             builder.ApplyConfiguration(new RequirementConfigurations());
             builder.ApplyConfiguration(new VacancyConfigurations());
+        }
+
+        public async Task SaveEntitiesAsync(CancellationToken cancellationToken = default)
+        {
+            await base.SaveChangesAsync(cancellationToken);
         }
     }
 }

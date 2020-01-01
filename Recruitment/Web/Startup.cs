@@ -13,6 +13,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Data.Context;
+using Domain.Interfaces;
+using Repository;
+using MediatR;
+using System.Reflection;
 
 namespace Web
 {
@@ -35,6 +39,9 @@ namespace Web
                     .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connectionString, x => x.MigrationsAssembly("Data")));
+
+            services.AddScoped<IClientRepository, ClientRepository>();
+            services.AddMediatR(typeof(Startup).GetTypeInfo().Assembly);
 
             services.AddControllersWithViews();
             services.AddRazorPages();

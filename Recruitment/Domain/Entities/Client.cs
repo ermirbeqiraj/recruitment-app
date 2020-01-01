@@ -22,5 +22,10 @@ namespace Domain.Entities
             Website = website;
             Description = description;
         }
+
+        public void AddVacancy(Vacancy vacancy)
+        {
+            _vacancies.Add(vacancy);
+        }
     }
 }

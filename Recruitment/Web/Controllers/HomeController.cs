@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Domain.Services.Commands;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Web.Models;
@@ -12,10 +14,11 @@ namespace Web.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private readonly IMediator _mediator;
+        public HomeController(ILogger<HomeController> logger, IMediator mediator)
         {
             _logger = logger;
+            _mediator = mediator;
         }
 
         public IActionResult Index()
@@ -23,8 +26,17 @@ namespace Web.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        public async Task<IActionResult> Privacy()
         {
+            var regClHndl = new RegisterClientCommand()
+            {
+                Name = "Ermir Beqiraj",
+                Description = ".Net Developer",
+                Website = "https://ermir.net"
+            };
+
+            await _mediator.Send(regClHndl);
+
             return View();
         }
 

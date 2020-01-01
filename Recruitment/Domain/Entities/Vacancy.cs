@@ -25,5 +25,10 @@ namespace Domain.Entities
             OpenDate = openDate;
             CloseDate = closeDate;
         }
+
+        public void AddRequirement(Requirement requirement)
+        {
+            _requirements.Add(requirement);
+        }
     }
 }
