@@ -35,6 +35,8 @@ namespace Web.Controllers
                 Website = "https://ermir.net"
             };
 
+
+
             await _mediator.Send(regClHndl);
 
             return View();

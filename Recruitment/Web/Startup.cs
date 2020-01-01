@@ -17,6 +17,7 @@ using Domain.Interfaces;
 using Repository;
 using MediatR;
 using System.Reflection;
+using Web.Utils;
 
 namespace Web
 {
@@ -42,6 +43,8 @@ namespace Web
 
             services.AddScoped<IClientRepository, ClientRepository>();
             services.AddMediatR(typeof(Startup).GetTypeInfo().Assembly);
+            var queriesConnectionString = new QueriesConnectionString(connectionString);
+            services.AddSingleton(queriesConnectionString);
 
             services.AddControllersWithViews();
             services.AddRazorPages();
