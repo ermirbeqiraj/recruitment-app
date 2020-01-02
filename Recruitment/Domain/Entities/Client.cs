@@ -46,16 +46,11 @@ namespace Domain.Entities
             _vacancies.Add(vacancy);
         }
 
-        public void UpdateVacancy(Guid id, string title, string description, DateTime? openDate, DateTime? closeDate)
+        public void UpdateVacancy(Vacancy vacancy, string title, string description, DateTime? openDate, DateTime? closeDate)
         {
-            var found = _vacancies.Where(x => x.Id == id).Any();
-
-            if (!found)
-                throw new ArgumentException("Vacancy that you are trying to update doesn't exists!");
-
             foreach (var item in _vacancies)
             {
-                if (item.Id == id)
+                if (item == vacancy)
                 {
                     item.UpdateTitle(title);
                     item.UpdateDescription(description);
@@ -67,70 +62,49 @@ namespace Domain.Entities
             }
         }
 
-        public void CloseVacancy(Guid id)
+        public void CloseVacancy(Vacancy vacancy)
         {
-            var vacancyExists = _vacancies.Where(x => x.Id == id).Any();
-
-            if (!vacancyExists)
-                throw new ArgumentException("Vacancy that you are trying to close doesn't exists!");
-
             foreach (var item in _vacancies)
             {
-                if (item.Id == id)
+                if (item == vacancy)
                 {
                     item.UpdateCloseDate(DateTime.Now);
-
                     break;
                 }
             }
         }
 
-        public void UpdateRequirements(Guid vacancyId, Guid id, string content, SkillType skillType, RequirementType requirementType)
+        public void UpdateRequirement(Vacancy vacancy, Requirement requirement, Requirement newRequirement)
         {
-            var found = _vacancies.Where(x => x.Id == vacancyId).Any();
-
-            if (!found)
-                throw new ArgumentException("Vacancy doesn't exists!");
-
             foreach (var item in _vacancies)
             {
-                if (item.Id == vacancyId)
+                if (item == vacancy)
                 {
-                    item.UpdateRequirement(id, content, skillType, requirementType);
+                    item.UpdateRequirement(requirement, newRequirement);
                     break;
                 }
             }
         }
 
-        public void RemoveRequirement(Guid vacancyId, Guid id)
+        public void RemoveRequirement(Requirement requirement)
         {
-            var found = _vacancies.Where(x => x.Id == vacancyId).Any();
-
-            if (!found)
-                throw new ArgumentException("Vacancy doesn't exists!");
-
             foreach (var item in _vacancies)
             {
-                if (item.Id == vacancyId)
+                if (item.Requirements.Where(x => x == requirement).Any())
                 {
-                    item.RemoveRequirement(id);
+                    item.RemoveRequirement(requirement);
                     break;
                 }
             }
         }
 
-        public void AddRequirementOnVacancy(Guid vacancyId, string content, SkillType skillType, RequirementType requirementType)
+        public void AddRequirementOnVacancy(Vacancy vacancy, Requirement requirement)
         {
-            var found = _vacancies.Where(x => x.Id == vacancyId).Any();
-
-            if (!found)
-                throw new ArgumentException("Vacancy that you are trying to update doesn't exists!");
-
             foreach (var item in _vacancies)
             {
-                if (item.Id == vacancyId)
+                if (item == vacancy)
                 {
-                    item.AddRequirement(new Requirement(content, skillType, requirementType));
+                    item.AddRequirement(requirement);
                     break;
                 }
             }

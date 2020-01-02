@@ -1,8 +1,6 @@
 ﻿using Domain.Common;
-using Domain.Constants;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Domain.Entities
 {
@@ -53,34 +51,24 @@ namespace Domain.Entities
             CloseDate = closeDate;
         }
 
-        internal void UpdateRequirement(Guid id, string content, SkillType skillType, RequirementType requirementType)
+        internal void RemoveRequirement(Requirement requirement)
         {
-            var found = _requirements.Where(x => x.Id == id).Any();
+            _requirements.Remove(requirement);
+        }
 
-            if (!found)
-                throw new ArgumentException("Requirement doesn't exists!");
-
+        internal void UpdateRequirement(Requirement requirement, Requirement newRequirement)
+        {
             foreach (var item in _requirements)
             {
-                if (item.Id == id)
+                if(item == requirement)
                 {
-                    item.UpdateContent(content);
-                    item.UpdateRequirementType(requirementType);
-                    item.UpdateSkillType(skillType);
+                    item.UpdateContent(newRequirement.Content);
+                    item.UpdateRequirementType(newRequirement.RequirementType);
+                    item.UpdateSkillType(newRequirement.SkillType);
 
                     break;
                 }
             }
-        }
-
-        internal void RemoveRequirement(Guid id)
-        {
-            var requirement = _requirements.Where(x => x.Id == id).FirstOrDefault();
-
-            if (requirement == null)
-                throw new ArgumentException("Requirement doesn't exists!");
-
-            _requirements.Remove(requirement);
         }
     }
 }

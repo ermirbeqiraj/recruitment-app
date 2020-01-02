@@ -2,6 +2,7 @@
 using Domain.Interfaces;
 using Domain.Services.Commands;
 using MediatR;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -18,13 +19,16 @@ namespace Web.Application.Handlers
 
         public async Task<Result> Handle(RemoveRequirementCommand request, CancellationToken cancellationToken)
         {
-            var client = await _repo.Get(request.ClientId);
-            if (client == null)
+            var dbClient = await _repo.Get(request.ClientId);
+            if (dbClient == null)
                 return Result.Failure("Failed to retrieve client");
 
-            client.RemoveRequirement(request.VacancyId, request.Id);
+            var dbRequirement = dbClient.Vacancies.SelectMany(x => x.Requirements).Where(x => x.Id == request.Id).FirstOrDefault();
+            if (dbRequirement == null)
+                return Result.Failure("Failed to retrieve requirement");
 
-            _repo.Update(client);
+            dbClient.RemoveRequirement(dbRequirement);
+            _repo.Update(dbClient);
             await _repo.UnitOfWork.SaveEntitiesAsync();
 
             return Result.Ok();

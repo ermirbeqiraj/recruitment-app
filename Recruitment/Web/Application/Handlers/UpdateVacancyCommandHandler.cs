@@ -20,17 +20,17 @@ namespace Web.Application.Handlers
 
         public async Task<Result> Handle(UpdateVacancyCommand request, CancellationToken cancellationToken)
         {
-            var client = await _repo.Get(request.ClientId);
-            if (client == null)
+            var dbClient = await _repo.Get(request.ClientId);
+            if (dbClient == null)
                 return Result.Failure("Failed to retrieve client of this vacancy");
 
-            var searchingVacancy = client.Vacancies.Where(x => x.Id == request.Id).FirstOrDefault();
-            if (searchingVacancy == null)
+            var dbVacancy = dbClient.Vacancies.Where(x => x.Id == request.Id).FirstOrDefault();
+            if (dbVacancy == null)
                 return Result.Failure("Unable to find current vacancy");
 
-            client.UpdateVacancy(request.Id, request.Title, request.Description, request.OpenDate, request.CloseDate);
+            dbClient.UpdateVacancy(dbVacancy, request.Title, request.Description, request.OpenDate, request.CloseDate);
 
-            _repo.Update(client);
+            _repo.Update(dbClient);
             await _repo.UnitOfWork.SaveEntitiesAsync();
 
             return Result.Ok();

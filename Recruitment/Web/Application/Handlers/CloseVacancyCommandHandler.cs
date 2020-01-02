@@ -27,7 +27,7 @@ namespace Web.Application.Handlers
             if (searchingVacancy == null)
                 return Result.Failure("Unable to find current vacancy");
 
-            client.CloseVacancy(request.Id);
+            client.CloseVacancy(searchingVacancy);
 
             _repo.Update(client);
             await _repo.UnitOfWork.SaveEntitiesAsync();
