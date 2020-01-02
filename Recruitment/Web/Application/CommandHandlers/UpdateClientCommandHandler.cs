@@ -5,7 +5,7 @@ using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Web.Application.Handlers
+namespace Web.Application.CommandHandlers
 {
     public sealed class UpdateClientCommandHandler : IRequestHandler<UpdateClientCommand, Result>
     {

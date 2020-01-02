@@ -7,12 +7,12 @@ using Web.Application.Queries;
 using Web.Models;
 using Web.Utils;
 
-namespace Web.Application.Handlers
+namespace Web.Application.QueryHandlers
 {
     public sealed class GetClientUpdateQueryHandler : IRequestHandler<GetClientUpdateQuery, ClientUpdateModel>
     {
-        private readonly QueriesConnectionString _connectionString;
-        public GetClientUpdateQueryHandler(QueriesConnectionString connectionString)
+        private readonly ConnectionString _connectionString;
+        public GetClientUpdateQueryHandler(ConnectionString connectionString)
         {
             _connectionString = connectionString;
         }

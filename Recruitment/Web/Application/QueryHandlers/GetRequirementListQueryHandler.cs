@@ -9,13 +9,13 @@ using Web.Application.Queries;
 using Web.Models;
 using Web.Utils;
 
-namespace Web.Application.Handlers
+namespace Web.Application.QueryHandlers
 {
     public sealed class GetRequirementListQueryHandler : IRequestHandler<GetRequirementListQuery, List<RequirementListModel>>
     {
-        private readonly QueriesConnectionString _connectionString;
+        private readonly ConnectionString _connectionString;
 
-        public GetRequirementListQueryHandler(QueriesConnectionString connectionString)
+        public GetRequirementListQueryHandler(ConnectionString connectionString)
         {
             _connectionString = connectionString;
         }

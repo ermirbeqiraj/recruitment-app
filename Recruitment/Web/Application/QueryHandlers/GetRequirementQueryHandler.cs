@@ -7,13 +7,13 @@ using Web.Application.Queries;
 using Web.Models;
 using Web.Utils;
 
-namespace Web.Application.Handlers
+namespace Web.Application.QueryHandlers
 {
     public sealed class GetRequirementQueryHandler : IRequestHandler<GetRequirementQuery, RequirementUpdateModel>
     {
-        private readonly QueriesConnectionString _connectionString;
+        private readonly ConnectionString _connectionString;
 
-        public GetRequirementQueryHandler(QueriesConnectionString connectionString)
+        public GetRequirementQueryHandler(ConnectionString connectionString)
         {
             _connectionString = connectionString;
         }

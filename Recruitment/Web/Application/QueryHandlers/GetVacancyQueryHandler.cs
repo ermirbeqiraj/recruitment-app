@@ -1,21 +1,18 @@
 ﻿using Dapper;
 using MediatR;
 using Microsoft.Data.SqlClient;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Web.Application.Queries;
 using Web.Models;
 using Web.Utils;
 
-namespace Web.Application.Handlers
+namespace Web.Application.QueryHandlers
 {
     public class GetVacancyQueryHandler : IRequestHandler<GetVacancyQuery, VacancyUpdateModel>
     {
-        private readonly QueriesConnectionString _connectionString;
-        public GetVacancyQueryHandler(QueriesConnectionString connectionString)
+        private readonly ConnectionString _connectionString;
+        public GetVacancyQueryHandler(ConnectionString connectionString)
         {
             _connectionString = connectionString;
         }

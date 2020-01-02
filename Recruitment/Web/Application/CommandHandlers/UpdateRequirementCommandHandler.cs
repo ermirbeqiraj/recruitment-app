@@ -7,18 +7,18 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Web.Application.Handlers
+namespace Web.Application.CommandHandlers
 {
-    public sealed class AddRequirementCommandHandler : IRequestHandler<AddRequirementCommand, Result>
+    public sealed class UpdateRequirementCommandHandler : IRequestHandler<UpdateRequirementCommand, Result>
     {
         private readonly IClientRepository _repo;
 
-        public AddRequirementCommandHandler(IClientRepository repo)
+        public UpdateRequirementCommandHandler(IClientRepository repo)
         {
             _repo = repo;
         }
 
-        public async Task<Result> Handle(AddRequirementCommand request, CancellationToken cancellationToken)
+        public async Task<Result> Handle(UpdateRequirementCommand request, CancellationToken cancellationToken)
         {
             var dbClient = await _repo.Get(request.ClientId);
             if (dbClient == null)
@@ -28,9 +28,11 @@ namespace Web.Application.Handlers
             if (dbVacancy == null)
                 return Result.Failure("Failed to retrieve vacancy");
 
-            var requirement = new Requirement(request.Content, request.SkillType, request.RequirementType);
-
-            dbClient.AddRequirementOnVacancy(dbVacancy, requirement);
+            var dbRequirement = dbClient.Vacancies.SelectMany(x => x.Requirements).Where(x => x.Id == request.Id).FirstOrDefault();
+            if (dbRequirement == null)
+                return Result.Failure("Failed to retrieve requirement");
+            
+            dbClient.UpdateRequirement(dbVacancy, dbRequirement, new Requirement(request.Content, request.SkillType, request.RequirementType));
 
             _repo.Update(dbClient);
             await _repo.UnitOfWork.SaveEntitiesAsync();

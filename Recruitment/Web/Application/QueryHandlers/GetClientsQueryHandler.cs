@@ -9,12 +9,12 @@ using Web.Application.Queries;
 using Web.Models;
 using Web.Utils;
 
-namespace Web.Application.Handlers
+namespace Web.Application.QueryHandlers
 {
     public sealed class GetClientsQueryHandler : IRequestHandler<GetClientsQuery, List<ClientListModel>>
     {
-        private readonly QueriesConnectionString _connectionString;
-        public GetClientsQueryHandler(QueriesConnectionString connectionString)
+        private readonly ConnectionString _connectionString;
+        public GetClientsQueryHandler(ConnectionString connectionString)
         {
             _connectionString = connectionString;
         }

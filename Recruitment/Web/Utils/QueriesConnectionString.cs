@@ -1,9 +1,9 @@
 ﻿namespace Web.Utils
 {
-    public class QueriesConnectionString
+    public class ConnectionString
     {
         public string Value { get; }
-        public QueriesConnectionString(string connectionString)
+        public ConnectionString(string connectionString)
         {
             Value = connectionString;
         }

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Web.Application.Handlers
+namespace Web.Application.CommandHandlers
 {
     public sealed class CloseVacancyCommandHandler : IRequestHandler<CloseVacancyCommand, Result>
     {

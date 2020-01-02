@@ -43,7 +43,7 @@ namespace Web
 
             services.AddScoped<IClientRepository, ClientRepository>();
             services.AddMediatR(typeof(Startup).GetTypeInfo().Assembly);
-            var queriesConnectionString = new QueriesConnectionString(connectionString);
+            var queriesConnectionString = new ConnectionString(connectionString);
             services.AddSingleton(queriesConnectionString);
 
             services.AddControllersWithViews();

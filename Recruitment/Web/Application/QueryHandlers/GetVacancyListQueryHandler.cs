@@ -9,12 +9,12 @@ using Web.Application.Queries;
 using Web.Models;
 using Web.Utils;
 
-namespace Web.Application.Handlers
+namespace Web.Application.QueryHandlers
 {
     public class GetVacancyListQueryHandler : IRequestHandler<GetVacancyListQuery, List<VacancyListModel>>
     {
-        private readonly QueriesConnectionString _connectionString;
-        public GetVacancyListQueryHandler(QueriesConnectionString connectionString)
+        private readonly ConnectionString _connectionString;
+        public GetVacancyListQueryHandler(ConnectionString connectionString)
         {
             _connectionString = connectionString;
         }

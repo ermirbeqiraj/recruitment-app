@@ -2,13 +2,11 @@
 using Domain.Interfaces;
 using Domain.Services.Commands;
 using MediatR;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Web.Application.Handlers
+namespace Web.Application.CommandHandlers
 {
     public class UpdateVacancyCommandHandler : IRequestHandler<UpdateVacancyCommand, Result>
     {
