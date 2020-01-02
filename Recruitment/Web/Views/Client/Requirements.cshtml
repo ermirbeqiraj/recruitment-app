@@ -1,0 +1,190 @@
+﻿@model IEnumerable<Web.Models.RequirementListModel>
+
+@{
+    ViewData["Title"] = "Requirements";
+}
+
+<h1>Requirements</h1>
+
+<p>
+    <a href="#" class="add-request">Add requirement</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.SkillType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RequirementType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Content)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SkillType)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RequirementType)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Content)
+                </td>
+                <td>
+                    <a href="#" class="update-requirement" data-id="@item.Id">Update</a> |
+                    <a href="#" class="delete-requirement" data-id="@item.Id">Remove</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="modal fade" id="update-request-modal" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <form id="UpdateRequirementForm" asp-action="UpdateRequirement" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title">Update Request</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input id="Id" name="Id" type="hidden" />
+                    <input id="VacancyId" name="VacancyId" type="hidden" />
+                    <input name="ClientId" type="hidden" value="@ViewBag.Client" />
+                    <div class="form-group">
+                        <label for="SkillType">Skill Type</label>
+                        <select id="SkillType" name="SkillType" class="form-control">
+                            <option selected value="10">Technical</option>
+                            <option value="20">Soft</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="RequirementType">Requirement Type</label>
+                        <select id="RequirementType" name="RequirementType" class="form-control">
+                            <option selected value="10">Required</option>
+                            <option value="20">Nice To Have</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Content">Content</label>
+                        <input id="Content" name="Content" maxlength="200" class="form-control" autocomplete="off" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="add-request-modal" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <form id="AddRequirementForm" asp-action="AddRequirement" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title">Update Request</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input name="VacancyId" type="hidden" value="@ViewBag.Vacancy" />
+                    <input name="ClientId" type="hidden" value="@ViewBag.Client" />
+                    <div class="form-group">
+                        <label for="SkillType">Skill Type</label>
+                        <select name="SkillType" class="form-control">
+                            <option selected value="10">Technical</option>
+                            <option value="20">Soft</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="RequirementType">Requirement Type</label>
+                        <select name="RequirementType" class="form-control">
+                            <option selected value="10">Required</option>
+                            <option value="20">Nice To Have</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Content">Content</label>
+                        <input name="Content" maxlength="200" class="form-control" autocomplete="off" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            var updateModal = $("#update-request-modal");
+
+            $(".update-requirement").click(function () {
+                let id = $(this).data('id');
+                if (id) {
+                    $.ajax({
+                        url: '@Url.Action("GetRequirement", "client", new { id = "__id__" })'.replace("__id__", id),
+                        method: 'GET',
+                        cache: false
+                    }).done(function (data) {
+                        $("#UpdateRequirementForm").find("input#Id").val(data.id);
+                        $("#UpdateRequirementForm").find("input#VacancyId").val(data.vacancyId);
+                        $("#UpdateRequirementForm").find("select#SkillType").val(data.skillType);
+                        $("#UpdateRequirementForm").find("select#RequirementType").val(data.requirementType);
+                        $("#UpdateRequirementForm").find("input#Content").val(data.content);
+
+                        $(updateModal).modal('show');
+                    }).fail(function (result) {
+                        console.log(result);
+                        alert('failed to retrieve data.');
+                    });
+                }
+            });
+
+            $(".add-request").click(function () {
+                $("#add-request-modal").modal('show');
+            });
+
+            $(".delete-requirement").click(function () {
+                if (confirm('are you sure you want to delete this requirement?')) {
+                    let vacancy = '@ViewBag.Vacancy';
+                    let client = '@ViewBag.Client';
+                    let id = $(this).data('id');
+
+                    let calculatedUrl = '@Html.Raw(Url.Action("RemoveRequirement", "Client", new { vacancy = "__vacancy__", clientId = "__clientid__", requirementId = "__id__" }))'
+                        .replace('__vacancy__', vacancy)
+                        .replace('__id__', id)
+                        .replace('__clientid__', client);
+
+                    $.ajax({
+                        url: calculatedUrl,
+                        method: 'DELETE'
+                    }).done(function () {
+                        window.location.reload();
+                    }).fail(function () {
+                        alert('failed to remove requirement');
+                    });
+                }
+            })
+        });
+    </script>
+}

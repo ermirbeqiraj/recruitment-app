@@ -24,9 +24,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.CloseDate)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ClientId)
-            </th>
             <th></th>
         </tr>
     </thead>
@@ -47,12 +44,8 @@
                     @Html.DisplayFor(modelItem => item.CloseDate)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.ClientId)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit Vacancy", "EditVacancy", new { id = item.Id, client = item.ClientId }) |
-                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-
+                    <a asp-action="EditVacancy" asp-route-id="@item.Id" asp-route-client="@item.ClientId">Modify</a> |
+                    <a asp-action="Requirements" asp-route-client="@item.ClientId" asp-route-vacancy="@item.Id">Requirements</a> |
                     <a class="close-vacancy" href="#" data-id="@item.Id" data-client="@item.ClientId">Close</a>
                 </td>
             </tr>

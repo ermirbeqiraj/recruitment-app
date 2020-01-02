@@ -1,4 +1,5 @@
 ﻿using Domain.Common;
+using Domain.Constants;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +26,21 @@ namespace Domain.Entities
             Description = description;
         }
 
+        public void UpdateName(string name)
+        {
+            Name = name;
+        }
+
+        public void UpdateWebsite(string website)
+        {
+            Website = website;
+        }
+
+        public void UpdateDescription(string description)
+        {
+            Description = description;
+        }
+
         public void AddVacancy(Vacancy vacancy)
         {
             _vacancies.Add(vacancy);
@@ -39,7 +55,7 @@ namespace Domain.Entities
 
             foreach (var item in _vacancies)
             {
-                if(item.Id == id)
+                if (item.Id == id)
                 {
                     item.UpdateTitle(title);
                     item.UpdateDescription(description);
@@ -69,19 +85,55 @@ namespace Domain.Entities
             }
         }
 
-        public void UpdateName(string name)
+        public void UpdateRequirements(Guid vacancyId, Guid id, string content, SkillType skillType, RequirementType requirementType)
         {
-            Name = name;
+            var found = _vacancies.Where(x => x.Id == vacancyId).Any();
+
+            if (!found)
+                throw new ArgumentException("Vacancy doesn't exists!");
+
+            foreach (var item in _vacancies)
+            {
+                if (item.Id == vacancyId)
+                {
+                    item.UpdateRequirement(id, content, skillType, requirementType);
+                    break;
+                }
+            }
         }
 
-        public void UpdateWebsite(string website)
+        public void RemoveRequirement(Guid vacancyId, Guid id)
         {
-            Website = website;
+            var found = _vacancies.Where(x => x.Id == vacancyId).Any();
+
+            if (!found)
+                throw new ArgumentException("Vacancy doesn't exists!");
+
+            foreach (var item in _vacancies)
+            {
+                if (item.Id == vacancyId)
+                {
+                    item.RemoveRequirement(id);
+                    break;
+                }
+            }
         }
 
-        public void UpdateDescription(string description)
+        public void AddRequirementOnVacancy(Guid vacancyId, string content, SkillType skillType, RequirementType requirementType)
         {
-            Description = description;
+            var found = _vacancies.Where(x => x.Id == vacancyId).Any();
+
+            if (!found)
+                throw new ArgumentException("Vacancy that you are trying to update doesn't exists!");
+
+            foreach (var item in _vacancies)
+            {
+                if (item.Id == vacancyId)
+                {
+                    item.AddRequirement(new Requirement(content, skillType, requirementType));
+                    break;
+                }
+            }
         }
     }
 }

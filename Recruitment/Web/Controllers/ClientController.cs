@@ -72,7 +72,8 @@ namespace Web.Controllers
             return View(model);
         }
 
-        [Route("[controller]/vacancy-({client:guid:required})/[action]")]
+        #region vacancies
+        [Route("[controller]/vacancyof-({client:guid:required})/[action]")]
         public async Task<IActionResult> Vacancies(Guid client)
         {
             var cmd = new GetVacancyListQuery(client);
@@ -82,7 +83,7 @@ namespace Web.Controllers
             return View(result);
         }
 
-        [Route("[controller]/vacancy-({client:guid:required})/[action]")]
+        [Route("[controller]/vacancyof-({client:guid:required})/[action]")]
         public IActionResult CreateVacancy(Guid client)
         {
             ViewBag.Client = client;
@@ -90,7 +91,7 @@ namespace Web.Controllers
         }
 
         [HttpPost]
-        [Route("[controller]/vacancy-({client:guid:required})/[action]")]
+        [Route("[controller]/vacancyof-({client:guid:required})/[action]")]
         public async Task<IActionResult> CreateVacancy(Guid client, VacancyCreateModel model)
         {
             if (ModelState.IsValid)
@@ -107,7 +108,7 @@ namespace Web.Controllers
             return View(model);
         }
 
-        [Route("[controller]/vacancy-({client:guid:required})/[action]/{id}")]
+        [Route("[controller]/vacancyof-({client:guid:required})/[action]/{id}")]
         public async Task<IActionResult> EditVacancy(Guid client, Guid id)
         {
             var cmd = new GetVacancyQuery(id);
@@ -116,7 +117,7 @@ namespace Web.Controllers
         }
 
         [HttpPost]
-        [Route("[controller]/vacancy-({client:guid:required})/[action]/{id}")]
+        [Route("[controller]/vacancyof-({client:guid:required})/[action]/{id}")]
         public async Task<IActionResult> EditVacancy(Guid client, VacancyUpdateModel model)
         {
             if (ModelState.IsValid)
@@ -138,18 +139,86 @@ namespace Web.Controllers
         public async Task<IActionResult> CloseVacancy(Guid client, Guid id)
         {
             if (id == Guid.Empty)
-            {
                 return BadRequest("Invalid identifier provided");
-            }
 
             var cmd = new CloseVacancyCommand(id, client);
             var result = await _mediator.Send(cmd);
             if (result.IsFailure)
-            {
                 return BadRequest(result.Error);
-            }
 
             return Ok();
         }
+
+        #endregion
+
+        #region requirements
+        [Route("[controller]/{client}/vacancy-({vacancy:guid:required})/[action]")]
+        public async Task<IActionResult> Requirements(Guid client, Guid vacancy)
+        {
+            ViewBag.Vacancy = vacancy;
+            ViewBag.Client = client;
+            var cmd = new GetRequirementListQuery(vacancy);
+            var result = await _mediator.Send(cmd);
+            return View(result);
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> GetRequirement(Guid id)
+        {
+            var cmd = new GetRequirementQuery(id);
+            var result = await _mediator.Send(cmd);
+            return Json(result);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateRequirement(RequirementUpdateModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var cmd = new UpdateRequirementCommand(model.Id, model.VacancyId, model.ClientId, model.SkillType, model.RequirementType, model.Content);
+                var result = await _mediator.Send(cmd);
+                if (result.IsFailure)
+                    ViewBag.Notify = result.Error; // todo: toastr
+            }
+
+
+            if (model.VacancyId != Guid.Empty)
+                return RedirectToAction(nameof(ClientController.Requirements), new { client = model.ClientId, vacancy = model.VacancyId });
+            else
+                return RedirectToAction(nameof(ClientController.Index));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddRequirement(RequirementCreateModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var cmd = new AddRequirementCommand(model.VacancyId, model.ClientId, model.SkillType, model.RequirementType, model.Content);
+                var result = await _mediator.Send(cmd);
+
+                if (result.IsFailure)
+                    ViewBag.Notify = result.Error; // todo: toastr
+            }
+
+            if (model.VacancyId != Guid.Empty)
+                return RedirectToAction(nameof(ClientController.Requirements), new { client = model.ClientId, vacancy = model.VacancyId });
+            else
+                return RedirectToAction(nameof(ClientController.Index));
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> RemoveRequirement(Guid vacancy, Guid clientId, Guid requirementId)
+        {
+            if (vacancy != Guid.Empty && clientId != Guid.Empty && requirementId != Guid.Empty)
+            {
+                var cmd = new RemoveRequirementCommand(requirementId, clientId, vacancy);
+                var result = await _mediator.Send(cmd);
+
+                if (result.IsFailure)
+                    ViewBag.Notify = result.Error; // todo: toastr
+            }
+            return Ok();
+        }
+        #endregion
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain.Constants;
+using System;
 
 namespace Web.Models
 {
@@ -52,5 +53,33 @@ namespace Web.Models
         public string Description { get; set; }
         public DateTime? OpenDate { get; set; }
         public DateTime? CloseDate { get; set; }
+    }
+
+    public class RequirementListModel
+    {
+        public Guid Id { get; set; }
+        public Guid VacancyId { get; set; }
+        public SkillType SkillType { get; set; }
+        public RequirementType RequirementType { get; set; }
+        public string Content { get; set; }
+    }
+
+    public class RequirementCreateModel
+    {
+        public Guid VacancyId { get; set; }
+        public Guid ClientId { get; set; }
+        public SkillType SkillType { get; set; }
+        public RequirementType RequirementType { get; set; }
+        public string Content { get; set; }
+    }
+
+    public class RequirementUpdateModel
+    {
+        public Guid Id { get; set; }
+        public Guid VacancyId { get; set; }
+        public Guid ClientId { get; set; }
+        public SkillType SkillType { get; set; }
+        public RequirementType RequirementType { get; set; }
+        public string Content { get; set; }
     }
 }

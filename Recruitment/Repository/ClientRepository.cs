@@ -31,7 +31,7 @@ namespace Repository
 
         public void Update(Client model)
         {
-            _context.Entry(model).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            _context.Entry(model).State = EntityState.Modified;
         }
 
         public async Task<Client> Get(Guid id)
@@ -40,6 +40,16 @@ namespace Repository
                                     .Include(v => v.Vacancies)
                                     .ThenInclude(r => r.Requirements)
                                     .FirstOrDefaultAsync();
+
+            return client;
+        }
+
+        public async Task<Client> GetByVacancy(Guid vacancyId)
+        {
+            var client = await _context.Clients.Where(x => x.Vacancies.Any(v => v.Id == vacancyId))
+                                .Include(v => v.Vacancies)
+                                .ThenInclude(r => r.Requirements)
+                                .FirstOrDefaultAsync();
 
             return client;
         }
