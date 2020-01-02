@@ -51,6 +51,24 @@ namespace Domain.Entities
             }
         }
 
+        public void CloseVacancy(Guid id)
+        {
+            var vacancyExists = _vacancies.Where(x => x.Id == id).Any();
+
+            if (!vacancyExists)
+                throw new ArgumentException("Vacancy that you are trying to close doesn't exists!");
+
+            foreach (var item in _vacancies)
+            {
+                if (item.Id == id)
+                {
+                    item.UpdateCloseDate(DateTime.Now);
+
+                    break;
+                }
+            }
+        }
+
         public void UpdateName(string name)
         {
             Name = name;

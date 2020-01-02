@@ -132,5 +132,24 @@ namespace Web.Controllers
 
             return View(model);
         }
+
+
+        [HttpPut]
+        public async Task<IActionResult> CloseVacancy(Guid client, Guid id)
+        {
+            if (id == Guid.Empty)
+            {
+                return BadRequest("Invalid identifier provided");
+            }
+
+            var cmd = new CloseVacancyCommand(id, client);
+            var result = await _mediator.Send(cmd);
+            if (result.IsFailure)
+            {
+                return BadRequest(result.Error);
+            }
+
+            return Ok();
+        }
     }
 }

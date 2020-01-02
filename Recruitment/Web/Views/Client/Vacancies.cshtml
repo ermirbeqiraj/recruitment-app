@@ -31,29 +31,61 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.OpenDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CloseDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ClientId)
-            </td>
-            <td>
-                @Html.ActionLink("Edit Vacancy", "EditVacancy", new { id = item.Id, client = item.ClientId }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OpenDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CloseDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ClientId)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit Vacancy", "EditVacancy", new { id = item.Id, client = item.ClientId }) |
+                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+
+                    <a class="close-vacancy" href="#" data-id="@item.Id" data-client="@item.ClientId">Close</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $(".close-vacancy").click(function () {
+                let id = $(this).data('id');
+                let client = $(this).data('client');
+
+                if (!id || !client) {
+                    alert('Entry is not correct.');
+                    return;
+                }
+
+                if (confirm('Are you sure you want to close this vacancy?')) {
+                    $.ajax({
+                        url: '@Url.Action("CloseVacancy","Client", new { client = "__client__", id = "__id__" })'.replace("__client__", client).replace("__id__", id),
+                        cache: false,
+                        method: 'PUT',
+                        data: {}
+                    }).done(function () {
+                        window.location.reload(true);
+                    }).fail(function (response) {
+                        console.location(response);
+                        alert('failed to close vacancy.');
+                    });
+                }
+            });
+        });
+    </script>
+}
