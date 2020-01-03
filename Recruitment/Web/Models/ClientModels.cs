@@ -1,5 +1,6 @@
 ﻿using Domain.Constants;
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Web.Models
 {
@@ -33,7 +34,11 @@ namespace Web.Models
         public Guid Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
+
+        [Display(Name = "Open Date")]
         public DateTime? OpenDate { get; set; }
+
+        [Display(Name = "Close Date")]
         public DateTime? CloseDate { get; set; }
         public Guid ClientId { get; set; }
     }
@@ -42,7 +47,11 @@ namespace Web.Models
     {
         public string Title { get; set; }
         public string Description { get; set; }
+
+        [Display(Name = "Open Date")]
         public DateTime? OpenDate { get; set; }
+
+        [Display(Name = "Close Date")]
         public DateTime? CloseDate { get; set; }
     }
 
@@ -51,7 +60,11 @@ namespace Web.Models
         public Guid Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
+
+        [Display(Name = "Open Date")]
         public DateTime? OpenDate { get; set; }
+
+        [Display(Name = "Close Date")]
         public DateTime? CloseDate { get; set; }
     }
 

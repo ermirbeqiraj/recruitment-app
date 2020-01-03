@@ -4,7 +4,7 @@
     ViewData["Title"] = "Vacancies";
 }
 
-<h1>Vacancies</h1>
+<h3>Vacancies</h3>
 
 <p>
     <a asp-action="CreateVacancy" asp-route-client="@ViewBag.Client">Open New Vacancy</a>
@@ -13,16 +13,16 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Title)
+                Title
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Description)
+                Description
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.OpenDate)
+                Open Date
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CloseDate)
+                Close Date
             </th>
             <th></th>
         </tr>
