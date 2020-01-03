@@ -26,5 +26,25 @@ namespace Domain.Entities
             CurrentPosition = currentPosition;
             Note = note;
         }
+
+        public void UpdateName(string name)
+        {
+            Name = name;
+        }
+
+        public void UpdateBirthday(DateTime? birthday)
+        {
+            Birthday = birthday;
+        }
+
+        public void UpdateCurrentPosition(string currentPosition)
+        {
+            CurrentPosition = currentPosition;
+        }
+
+        public void UpdateNote(string note)
+        {
+            Note = note;
+        }
     }
 }

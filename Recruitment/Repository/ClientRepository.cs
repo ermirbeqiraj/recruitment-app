@@ -43,25 +43,5 @@ namespace Repository
 
             return client;
         }
-
-        public async Task<Client> GetByVacancy(Guid vacancyId)
-        {
-            var client = await _context.Clients.Where(x => x.Vacancies.Any(v => v.Id == vacancyId))
-                                .Include(v => v.Vacancies)
-                                .ThenInclude(r => r.Requirements)
-                                .FirstOrDefaultAsync();
-
-            return client;
-        }
-
-        public async Task<Requirement> GetRequirement(Guid id)
-        {
-            return await _context.Requirements.Where(x => x.Id == id).FirstOrDefaultAsync();
-        }
-
-        public async Task<Vacancy> GetVacancy(Guid id)
-        {
-            return await _context.Vacancies.Where(x => x.Id == id).FirstOrDefaultAsync();
-        }
     }
 }

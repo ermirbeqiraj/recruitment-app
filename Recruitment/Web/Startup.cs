@@ -42,6 +42,8 @@ namespace Web
             services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connectionString, x => x.MigrationsAssembly("Data")));
 
             services.AddScoped<IClientRepository, ClientRepository>();
+            services.AddScoped<ICandidateRepository, CandidateRepository>();
+
             services.AddMediatR(typeof(Startup).GetTypeInfo().Assembly);
             var queriesConnectionString = new ConnectionString(connectionString);
             services.AddSingleton(queriesConnectionString);
