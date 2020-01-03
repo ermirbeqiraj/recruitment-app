@@ -1,0 +1,82 @@
+﻿@model IEnumerable<Web.Models.AppointmentListModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="MakeAppointment">Make a new appointment</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AppointmentType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StartsAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CandidateName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VacancyTitle)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AppointmentType)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartsAt)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CandidateName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.VacancyTitle)
+                </td>
+                <td>
+                    <a asp-action="UpdateAppointment" asp-route-id="@item.Id">Update Appointment</a> |
+                    <a href="#" class="remove-appointment" data-id="@item.Id">Remove</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+
+            $(".remove-appointment").click(function () {
+                if (confirm('are you sure you want to delete this appointment?')) {
+                    let id = $(this).data('id');
+                    $.ajax({
+                        url: '@Url.Action("RemoveAppointment","Appointment", new { id = "__id__" })'.replace('__id__', id),
+                        method: 'DELETE'
+                    }).done(function () {
+                        window.location.reload();
+                    }).fail(function () {
+                        alert('failed to remove appointment');
+                    });
+                }
+            })
+        });
+    </script>
+}

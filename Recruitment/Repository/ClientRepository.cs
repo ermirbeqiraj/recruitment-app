@@ -43,5 +43,10 @@ namespace Repository
 
             return client;
         }
+
+        public async Task<Vacancy> GetVacancy(Guid id)
+        {
+            return await _context.Vacancies.Where(x => x.Id == id).FirstOrDefaultAsync();
+        }
     }
 }

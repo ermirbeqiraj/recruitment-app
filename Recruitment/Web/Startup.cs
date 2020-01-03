@@ -43,6 +43,7 @@ namespace Web
 
             services.AddScoped<IClientRepository, ClientRepository>();
             services.AddScoped<ICandidateRepository, CandidateRepository>();
+            services.AddScoped<IAppointmentRepository, AppointmentRepository>();
 
             services.AddMediatR(typeof(Startup).GetTypeInfo().Assembly);
             var queriesConnectionString = new ConnectionString(connectionString);

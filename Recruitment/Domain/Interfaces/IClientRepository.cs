@@ -7,6 +7,7 @@ namespace Domain.Interfaces
 {
     public interface IClientRepository : IRepository<Client> 
     {
+        Task<Vacancy> GetVacancy(Guid id);
         Task<Client> Get(Guid id);
         void Add(Client model);
         void Update(Client model);

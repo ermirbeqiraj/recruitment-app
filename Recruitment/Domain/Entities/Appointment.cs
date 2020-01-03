@@ -19,5 +19,25 @@ namespace Domain.Entities
             Candidate = withCandidate;
             Vacancy = forVacancy;
         }
+
+        public void UpdateStartsAt(DateTime startsAt)
+        {
+            StartsAt = startsAt;
+        }
+
+        public void UpdateAppointmentType(AppointmentType appointmentType)
+        {
+            AppointmentType = appointmentType;
+        }
+
+        public void UpdateCandidate(Candidate candidate)
+        {
+            Candidate = candidate;
+        }
+
+        public void UpdateVacancy(Vacancy vacancy)
+        {
+            Vacancy = vacancy;
+        }
     }
 }
