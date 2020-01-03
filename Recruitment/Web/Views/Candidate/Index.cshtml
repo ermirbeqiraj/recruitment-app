@@ -28,26 +28,56 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Birthday)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CurrentPosition)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Note)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Birthday)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CurrentPosition)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Note)
+                </td>
+                <td>
+                    <a asp-action="Update" asp-route-id="@item.Id">Update</a> |
+                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                    <a href="#" class="remove-candidate" data-id="@item.Id">Remove</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $(".remove-candidate").click(function () {
+                let id = $(this).data('id');
+
+                if (!id) {
+                    alert('Entry is not correct.');
+                    return;
+                }
+
+                if (confirm('Are you sure you want to remove this candidate?')) {
+                    $.ajax({
+                        url: '@Url.Action("Remove","Candidate", new { id = "__id__" })'.replace("__id__", id),
+                        cache: false,
+                        method: 'DELETE',
+                        data: {}
+                    }).done(function () {
+                        window.location.reload(true);
+                    }).fail(function (response) {
+                        console.location(response);
+                        alert('failed to remove candidate!');
+                    });
+                }
+            });
+        });
+    </script>
+}

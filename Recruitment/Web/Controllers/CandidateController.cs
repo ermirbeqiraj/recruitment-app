@@ -34,7 +34,7 @@ namespace Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(CandidateRegisterModel model)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 var cmd = new RegisterCandidateCommand(model.Name, model.Birthday, model.CurrentPosition, model.Note);
                 var result = await _mediator.Send(cmd);
@@ -45,6 +45,45 @@ namespace Web.Controllers
             }
 
             return View(model);
+        }
+
+        public async Task<IActionResult> Update(Guid id)
+        {
+            var cmd = new GetCandidateQuery(id);
+            var result = await _mediator.Send(cmd);
+            return View(result);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Update(Guid id, CandidateModifyModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var cmd = new UpdateCandidateCommand(model.Id, model.Name, model.Birthday, model.CurrentPosition, model.Note);
+                var result = await _mediator.Send(cmd);
+                if (result.IsFailure)
+                    ModelState.AddModelError("", result.Error);
+                else
+                    return RedirectToAction(nameof(CandidateController.Index));
+            }
+
+            return View(model);
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> Remove(Guid id)
+        {
+            if (id != Guid.Empty)
+            {
+                var cmd = new RemoveCandidateCommand(id);
+                var result = await _mediator.Send(cmd);
+                if (result.IsFailure)
+                    return BadRequest("Failed to remove the candidate with error: " + result.Error);
+
+                return Ok();
+            }
+
+            return BadRequest("Invalid id");
         }
     }
 }
