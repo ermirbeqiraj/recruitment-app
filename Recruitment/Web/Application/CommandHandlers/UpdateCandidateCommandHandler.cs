@@ -1,6 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
 using Domain.Interfaces;
 using Domain.Services.Commands;
+using Domain.ValueObjects;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
@@ -22,7 +23,9 @@ namespace Web.Application.CommandHandlers
             if (dbCandidate == null)
                 return Result.Failure("Candidate not found!");
 
-            dbCandidate.UpdateName(request.Name);
+            var candidateName = new CandidateName(request.FirstName, request.LastName);
+
+            dbCandidate.UpdateName(candidateName);
             dbCandidate.UpdateBirthday(request.Birthday);
             dbCandidate.UpdateCurrentPosition(request.CurrentPosition);
             dbCandidate.UpdateNote(request.Note);

@@ -1,19 +1,23 @@
 ﻿using Domain.Constants;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Web.Models
 {
     public class AppointmentListModel
     {
         public Guid Id { get; set; }
+
+        [Display(Name = "Appointment Type")]
         public AppointmentType AppointmentType { get; set; }
+        [Display(Name = "Starts At")]
         public DateTime StartsAt { get; set; }
+
+        [Display(Name = "Candidate")]
         public string CandidateName { get; set; }
+
+        [Display(Name = "Vacancy")]
         public string VacancyTitle { get; set; }
     }
 

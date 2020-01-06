@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<Web.Models.AppointmentListModel>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Appointments";
 }
 
-<h3>Appointments</h3>
+<h3>@ViewData["Title"]</h3>
 
 <p>
     <a asp-action="MakeAppointment">Make a new appointment</a>

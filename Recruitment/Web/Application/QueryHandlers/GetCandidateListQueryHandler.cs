@@ -22,7 +22,7 @@ namespace Web.Application.QueryHandlers
 
         public async Task<List<CandidateListModel>> Handle(GetCandidateListQuery request, CancellationToken cancellationToken)
         {
-            var sql = @"select Id, Name, Birthday, CurrentPosition, Note from candidates";
+            var sql = @"select Id, (CandidateName_FirstName + ' ' + CandidateName_LastName) as [Name], Birthday, CurrentPosition, Note from candidates";
 
             using (var conn = new SqlConnection(_connectionString.Value))
             {

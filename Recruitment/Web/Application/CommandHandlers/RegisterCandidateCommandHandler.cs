@@ -1,6 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
 using Domain.Interfaces;
 using Domain.Services.Commands;
+using Domain.ValueObjects;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
@@ -18,7 +19,9 @@ namespace Web.Application.CommandHandlers
 
         public async Task<Result> Handle(RegisterCandidateCommand request, CancellationToken cancellationToken)
         {
-            _repo.Add(new Domain.Entities.Candidate(request.Name, request.Birthday, request.CurrentPosition, request.Note));
+            var candidateName = new CandidateName(request.FirstName, request.LastName);
+
+            _repo.Add(new Domain.Entities.Candidate(candidateName, request.Birthday, request.CurrentPosition, request.Note));
             await _repo.UnitOfWork.SaveEntitiesAsync();
 
             return Result.Ok();

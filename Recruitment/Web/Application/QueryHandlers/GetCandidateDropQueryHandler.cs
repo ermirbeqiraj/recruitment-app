@@ -22,7 +22,7 @@ namespace Web.Application.QueryHandlers
 
         public async Task<List<DropModel>> Handle(GetCandidateDropQuery request, CancellationToken cancellationToken)
         {
-            var sql = @"select Id, [Name] as [Text] from Candidates";
+            var sql = @"select Id, CandidateName_FirstName + ' ' + CandidateName_LastName as [Text] from Candidates";
             using (var conn = new SqlConnection(_connectionString.Value))
             {
                 var result = await conn.QueryAsync<DropModel>(sql);

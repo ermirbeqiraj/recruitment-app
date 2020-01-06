@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Domain.Services.Commands;
+﻿using Domain.Services.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Threading.Tasks;
 using Web.Application.Queries;
 using Web.Models;
 
@@ -36,7 +34,7 @@ namespace Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var cmd = new RegisterCandidateCommand(model.Name, model.Birthday, model.CurrentPosition, model.Note);
+                var cmd = new RegisterCandidateCommand(model.FirstName, model.LastName, model.Birthday, model.CurrentPosition, model.Note);
                 var result = await _mediator.Send(cmd);
                 if (result.IsFailure)
                     ModelState.AddModelError("", result.Error);
@@ -59,7 +57,7 @@ namespace Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var cmd = new UpdateCandidateCommand(model.Id, model.Name, model.Birthday, model.CurrentPosition, model.Note);
+                var cmd = new UpdateCandidateCommand(model.Id, model.FirstName, model.LastName, model.Birthday, model.CurrentPosition, model.Note);
                 var result = await _mediator.Send(cmd);
                 if (result.IsFailure)
                     ModelState.AddModelError("", result.Error);

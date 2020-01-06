@@ -14,7 +14,14 @@ namespace Data.Configuration
             var appointmentNav = builder.Metadata.FindNavigation(nameof(Candidate.Appointments));
             appointmentNav.SetPropertyAccessMode(PropertyAccessMode.Field);
 
-            builder.Property(x => x.Name).IsRequired().HasMaxLength(100);
+            builder.OwnsOne(x => x.CandidateName, a =>
+            {
+                a.Property(p => p.FirstName).IsRequired().HasMaxLength(50);
+                a.Property(p => p.LastName).IsRequired().HasMaxLength(50);
+
+                a.WithOwner();
+            });
+            
             builder.Property(x => x.CurrentPosition).HasMaxLength(100);
             builder.Property(x => x.Note).HasMaxLength(1000);
         }

@@ -20,7 +20,7 @@ namespace Web.Application.QueryHandlers
 
         public async Task<CandidateModifyModel> Handle(GetCandidateQuery request, CancellationToken cancellationToken)
         {
-            var sql = @"select Id, Name, Birthday, CurrentPosition, Note from candidates Where Id = @Id";
+            var sql = @"select Id, CandidateName_FirstName as [FirstName], CandidateName_LastName as [LastName], Birthday, CurrentPosition, Note from candidates Where Id = @Id";
             using (var conn = new SqlConnection(_connectionString.Value))
             {
                 var dbResult = await conn.QueryFirstOrDefaultAsync<CandidateModifyModel>(sql, new { request.Id });

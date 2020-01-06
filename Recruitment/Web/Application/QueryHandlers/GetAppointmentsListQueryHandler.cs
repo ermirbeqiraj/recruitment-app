@@ -22,7 +22,7 @@ namespace Web.Application.QueryHandlers
 
         public async Task<List<AppointmentListModel>> Handle(GetAppointmentsListQuery request, CancellationToken cancellationToken)
         {
-            var sql = @"select A.Id, A.AppointmentType, A.StartsAt, C.Name as CandidateName, V.Title as VacancyTitle
+            var sql = @"select A.Id, A.AppointmentType, A.StartsAt, C.CandidateName_FirstName + ' ' + C.CandidateName_LastName as CandidateName, V.Title as VacancyTitle
                         from Appointments as A
                         join Candidates as C on A.CandidateId = C.Id
                         join Vacancies as V on A.VacancyId = V.Id
