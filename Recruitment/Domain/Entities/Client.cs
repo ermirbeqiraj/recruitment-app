@@ -8,6 +8,10 @@ namespace Domain.Entities
 {
     public class Client : Entity, IAggregateRoot
     {
+        private const int NAME_LEN = 100;
+        private const int WEBSITE_LEN = 150;
+        private const int DESCRIPTION_LEN = 1000;
+
         private readonly List<Vacancy> _vacancies;
         public IReadOnlyList<Vacancy> Vacancies => _vacancies;
         public string Name { get; private set; }
@@ -21,6 +25,18 @@ namespace Domain.Entities
 
         public Client(string name, string website, string description) : this()
         {
+            if (string.IsNullOrEmpty(name))
+                throw new ArgumentNullException(nameof(name));
+
+            if (name.Length > NAME_LEN)
+                throw new ArgumentOutOfRangeException(nameof(name), $"{nameof(name)} should not be more than {NAME_LEN} characters");
+
+            if(!string.IsNullOrEmpty(website) && website.Length > WEBSITE_LEN)
+                throw new ArgumentOutOfRangeException(nameof(website), $"{nameof(website)} should not be more than {WEBSITE_LEN} characters");
+
+            if (!string.IsNullOrEmpty(description) && description.Length > DESCRIPTION_LEN)
+                throw new ArgumentOutOfRangeException(nameof(description), $"{nameof(description)} should not be more than {DESCRIPTION_LEN} characters");
+
             Name = name;
             Website = website;
             Description = description;

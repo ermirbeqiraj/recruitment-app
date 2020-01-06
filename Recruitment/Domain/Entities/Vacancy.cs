@@ -6,6 +6,9 @@ namespace Domain.Entities
 {
     public class Vacancy : Entity
     {
+        private const int TITLE_LEN = 200;
+        private const int DESCRIPTION_LEN = 1000;
+
         private readonly List<Requirement> _requirements;
         public IReadOnlyList<Requirement> Requirements => _requirements;
         public string Title { get; private set; }
@@ -20,6 +23,18 @@ namespace Domain.Entities
 
         public Vacancy(string title, string description, DateTime? openDate, DateTime? closeDate) : this()
         {
+            if (string.IsNullOrEmpty(title))
+                throw new ArgumentNullException(nameof(title));
+
+            if (title.Length > TITLE_LEN)
+                throw new ArgumentOutOfRangeException(nameof(title), $"Should not be more than {TITLE_LEN} characters");
+
+            if (!string.IsNullOrEmpty(description) && description.Length > DESCRIPTION_LEN)
+                throw new ArgumentOutOfRangeException(nameof(description), $"Should not be more than {DESCRIPTION_LEN} characters");
+
+            if (openDate.HasValue && closeDate.HasValue && openDate.Value > closeDate.Value)
+                throw new Exception($"{nameof(openDate)} can't be after {nameof(closeDate)}");
+
             Title = title;
             Description = description;
             OpenDate = openDate;
@@ -33,21 +48,36 @@ namespace Domain.Entities
 
         public void UpdateTitle(string title)
         {
+            if (string.IsNullOrEmpty(title))
+                throw new ArgumentNullException(nameof(title));
+
+            if (title.Length > TITLE_LEN)
+                throw new ArgumentOutOfRangeException(nameof(title), $"Should not be more than {TITLE_LEN} characters");
+
             Title = title;
         }
 
         public void UpdateDescription(string description)
         {
+            if (!string.IsNullOrEmpty(description) && description.Length > DESCRIPTION_LEN)
+                throw new ArgumentOutOfRangeException(nameof(description), $"Should not be more than {DESCRIPTION_LEN} characters");
+
             Description = description;
         }
 
         public void UpdateOpenDate(DateTime? openDate)
         {
+            if (openDate.HasValue && CloseDate.HasValue && openDate.Value > CloseDate.Value)
+                throw new Exception($"{nameof(openDate)} can't be after {nameof(CloseDate)}");
+
             OpenDate = openDate;
         }
 
         public void UpdateCloseDate(DateTime? closeDate)
         {
+            if (OpenDate.HasValue && closeDate.HasValue && OpenDate.Value > closeDate.Value)
+                throw new Exception($"{nameof(closeDate)} should be after {nameof(OpenDate)}");
+
             CloseDate = closeDate;
         }
 
@@ -60,7 +90,7 @@ namespace Domain.Entities
         {
             foreach (var item in _requirements)
             {
-                if(item == requirement)
+                if (item == requirement)
                 {
                     item.UpdateContent(newRequirement.Content);
                     item.UpdateRequirementType(newRequirement.RequirementType);
