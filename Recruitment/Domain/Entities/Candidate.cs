@@ -25,10 +25,10 @@ namespace Domain.Entities
 
         public Candidate(CandidateName name, DateTime? birthday, string currentPosition, string note) : this()
         {
-            if (!string.IsNullOrEmpty(currentPosition) && currentPosition.Length > CURRENT_POSITION_LEN)
+            if (!string.IsNullOrWhiteSpace(currentPosition) && currentPosition.Length > CURRENT_POSITION_LEN)
                 throw new ArgumentOutOfRangeException(nameof(currentPosition), $"Should not be more than {CURRENT_POSITION_LEN}");
 
-            if (!string.IsNullOrEmpty(note) && note.Length > NOTE_LEN)
+            if (!string.IsNullOrWhiteSpace(note) && note.Length > NOTE_LEN)
                 throw new ArgumentOutOfRangeException(nameof(note), $"Should not be more than {NOTE_LEN}");
 
             CandidateName = name;
@@ -49,7 +49,7 @@ namespace Domain.Entities
 
         public void UpdateCurrentPosition(string currentPosition)
         {
-            if (!string.IsNullOrEmpty(currentPosition) && currentPosition.Length > CURRENT_POSITION_LEN)
+            if (!string.IsNullOrWhiteSpace(currentPosition) && currentPosition.Length > CURRENT_POSITION_LEN)
                 throw new ArgumentOutOfRangeException(nameof(currentPosition), $"Should not be more than {CURRENT_POSITION_LEN}");
 
             CurrentPosition = currentPosition;
@@ -57,7 +57,7 @@ namespace Domain.Entities
 
         public void UpdateNote(string note)
         {
-            if (!string.IsNullOrEmpty(note) && note.Length > NOTE_LEN)
+            if (!string.IsNullOrWhiteSpace(note) && note.Length > NOTE_LEN)
                 throw new ArgumentOutOfRangeException(nameof(note), $"Should not be more than {NOTE_LEN}");
 
             Note = note;

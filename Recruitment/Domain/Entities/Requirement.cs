@@ -15,7 +15,7 @@ namespace Domain.Entities
         private Requirement() { }
         public Requirement(string content, SkillType skillType, RequirementType requirementType) : this()
         {
-            if (string.IsNullOrEmpty(content))
+            if (string.IsNullOrWhiteSpace(content))
                 throw new ArgumentNullException(nameof(content));
 
             if (content.Length > CONTENT_LEN)
@@ -30,7 +30,7 @@ namespace Domain.Entities
         public void UpdateRequirementType(RequirementType requirementType) => RequirementType = requirementType;
         public void UpdateContent(string content)
         {
-            if (string.IsNullOrEmpty(content))
+            if (string.IsNullOrWhiteSpace(content))
                 throw new ArgumentNullException(nameof(content));
 
             if (content.Length > CONTENT_LEN)
