@@ -13,7 +13,5 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.100
-    - name: Show position
-      run: ls
     - name: Build with dotnet
-      run: dotnet build $(Build.SourcesDirectory)/Recruitment/Recruitment.sln --configuration Release
+      run: dotnet build /Recruitment/Recruitment.sln --configuration Release
