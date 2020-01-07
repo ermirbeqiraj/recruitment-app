@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Domain.Test
 {
-    public class CandidateTest
+    public class CandidateTests
     {
         [Fact]
         public void Should_Create_Successfully()
