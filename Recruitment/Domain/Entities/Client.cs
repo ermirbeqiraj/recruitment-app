@@ -1,9 +1,10 @@
 ﻿using Domain.Common;
-using Domain.Constants;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
+[assembly: InternalsVisibleTo("Domain.Test")]
 namespace Domain.Entities
 {
     public class Client : Entity, IAggregateRoot

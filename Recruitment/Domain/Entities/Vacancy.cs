@@ -23,13 +23,13 @@ namespace Domain.Entities
 
         public Vacancy(string title, string description, DateTime? openDate, DateTime? closeDate) : this()
         {
-            if (string.IsNullOrEmpty(title))
+            if (string.IsNullOrWhiteSpace(title))
                 throw new ArgumentNullException(nameof(title));
 
             if (title.Length > TITLE_LEN)
                 throw new ArgumentOutOfRangeException(nameof(title), $"Should not be more than {TITLE_LEN} characters");
 
-            if (!string.IsNullOrEmpty(description) && description.Length > DESCRIPTION_LEN)
+            if (!string.IsNullOrWhiteSpace(description) && description.Length > DESCRIPTION_LEN)
                 throw new ArgumentOutOfRangeException(nameof(description), $"Should not be more than {DESCRIPTION_LEN} characters");
 
             if (openDate.HasValue && closeDate.HasValue && openDate.Value > closeDate.Value)
@@ -41,14 +41,9 @@ namespace Domain.Entities
             CloseDate = closeDate;
         }
 
-        public void AddRequirement(Requirement requirement)
-        {
-            _requirements.Add(requirement);
-        }
-
         public void UpdateTitle(string title)
         {
-            if (string.IsNullOrEmpty(title))
+            if (string.IsNullOrWhiteSpace(title))
                 throw new ArgumentNullException(nameof(title));
 
             if (title.Length > TITLE_LEN)
@@ -59,7 +54,7 @@ namespace Domain.Entities
 
         public void UpdateDescription(string description)
         {
-            if (!string.IsNullOrEmpty(description) && description.Length > DESCRIPTION_LEN)
+            if (!string.IsNullOrWhiteSpace(description) && description.Length > DESCRIPTION_LEN)
                 throw new ArgumentOutOfRangeException(nameof(description), $"Should not be more than {DESCRIPTION_LEN} characters");
 
             Description = description;
@@ -79,6 +74,11 @@ namespace Domain.Entities
                 throw new Exception($"{nameof(closeDate)} should be after {nameof(OpenDate)}");
 
             CloseDate = closeDate;
+        }
+
+        internal void AddRequirement(Requirement requirement)
+        {
+            _requirements.Add(requirement);
         }
 
         internal void RemoveRequirement(Requirement requirement)
